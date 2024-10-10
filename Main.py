@@ -12,7 +12,9 @@ while True:
     for boton in boton_pines:
         if boton.value() == 1:
             led.on()
-            time.sleep(1)
+            time.sleep(5)
         else:
             led.off()
-    time.sleep(0.1)
+    time.sleep(6)
+
+    
