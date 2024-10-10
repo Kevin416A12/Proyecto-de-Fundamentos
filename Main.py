@@ -1,10 +1,18 @@
-﻿import time
-from machine import Pin
+﻿import machine
+import time
 
-led = Pin(25, Pin.OUT)
 
-while 1:
-    led.low()
-    time.sleep(0.25)
-    led.high()
-    time.sleep(0.25)
+led = machine.Pin(25, machine.Pin.OUT)
+
+
+boton_pines = [machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_DOWN) for pin in [2, 3, 4, 5, 6]]
+
+while True:
+
+    for boton in boton_pines:
+        if boton.value() == 1:
+            led.on()
+            time.sleep(1)
+        else:
+            led.off()
+    time.sleep(0.1)
