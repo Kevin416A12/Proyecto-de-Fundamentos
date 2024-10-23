@@ -86,6 +86,9 @@ def limpiar():
 limpiar()
 
 while True:
+    """cuando el boton es presionado, lee el potenciometro e imprime el valor(falta meter la logica para que diga cuando 
+     un jugador esta seleccionado) y tambien manda el paquete "b'cambio'" """
+
     if boton_cambio.value() == 1:
         leer_potenciometro()
         # Crea un socket
@@ -100,6 +103,8 @@ while True:
         time.sleep(0.5)  # Anti-rebote
         print("Si, funciona Tilin")
 
+    """cuando el boton es presionado, envia un paquete con la informacion "b'100'" esta debe ser la leida en el .listen()
+         """
     if boton_100.value() == 1:
         boton_pulsado(lista_100)
         led_jugador_1.off()
@@ -115,7 +120,8 @@ while True:
             s.close()  # Cierra el socket manualmente
         time.sleep(0.5)  # Anti-rebote
         print("Si, funciona Tilin")
-
+    """cuando el boton es presionado, envia un paquete con la informacion "b'150'" esta debe ser la leida en el .listen()
+             """
     if boton_150.value() == 1:
         boton_pulsado(lista_150)
         led_jugador_1.off()
@@ -131,7 +137,8 @@ while True:
             s.close()  # Cierra el socket manualmente
         time.sleep(0.5)  # Anti-rebote
         print("Si, funciona Tilin")
-
+    """cuando el boton es presionado, envia un paquete con la informacion "b'200'" esta debe ser la leida en el .listen()
+             """
     if boton_200.value() == 1:
         boton_pulsado(lista_200)
         led_jugador_1.off()
@@ -147,7 +154,8 @@ while True:
             s.close()  # Cierra el socket manualmente
         time.sleep(0.5)  # Anti-rebote
         print("Si, funciona Tilin")
-
+    """cuando el boton es presionado, envia un paquete con la informacion "b'250'" esta debe ser la leida en el .listen()
+             """
     if boton_250.value() == 1:
         boton_pulsado(lista_250)
         led_jugador_1.off()
@@ -163,8 +171,8 @@ while True:
             s.close()  # Cierra el socket manualmente
         time.sleep(0.5)  # Anti-rebote
         print("Si, funciona Tilin")
-
-
+    """cuando el boton es presionado, envia un paquete con la informacion "b'500'" esta debe ser la leida en el .listen()
+             """
     if boton_500.value() == 1:
         boton_pulsado(lista_500)
         led_jugador_1.off()
