@@ -2,9 +2,11 @@
 import pygame
 import random
 from PIL import Image, ImageTk  # Importa PIL para manejar imágenes
+
 # Inicializa pygame y su funcion de musica
 pygame.init()
 pygame.mixer.init()
+
 
 # Función para reproducir música en bucle
 def reproducir_musica():
@@ -68,6 +70,38 @@ def ir_a_jugadores():
 
     
     mostrar_pantalla(frame_jugadores,frames)
+    
+# Definición global de imágenes
+imagenes = {}
+
+# Cargar imágenes de perfil
+def cargar_imagenes():
+    try:
+        imagenes["perro"] = PhotoImage(file="imagenes/perro.png")
+        imagenes["panda"] = PhotoImage(file="imagenes/panda.png")
+        imagenes["dinosaurio"] = PhotoImage(file="imagenes/dinosaurio.png")
+        imagenes["tigre"] = PhotoImage(file="imagenes/tigre.png")
+        imagenes["gato"] = PhotoImage(file="imagenes/gato.png")
+    except Exception as e:
+        print(f"Error al cargar imágenes: {e}")
+
+# Llama a la función de cargar imágenes después de crear la ventana
+
+
+# Inicialización de variables
+perfil_jugador1 = None
+perfil_jugador2 = None
+
+def seleccionar_perfil_jugador1(imagen):
+    global perfil_jugador1
+    perfil_jugador1 = imagen
+
+def seleccionar_perfil_jugador2(imagen):
+    global perfil_jugador2
+    perfil_jugador2 = imagen
+
+
+
 def un_jugador1():
     global frame_1jugador,imagen_perro,imagen_dinosaurio,imagen_panda,imagen_tigre,imagen_gato
     frame_1jugador= Frame(inicio)
@@ -112,11 +146,6 @@ def un_jugador1():
     boton_play=Button(frame_1jugador,text='PLAY', bg='#243642',width=20,
                     borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     boton_play.place(x=600,y=700)
-    
-     
-
-
-
     # Dibuja la imagen en el canvas
     fondo_canvasj.create_image(0, 0, anchor='nw', image=fondo_imagen)
     fondo_canvasj.image = fondo_imagen  # Mantén una referencia a la imagen
@@ -129,84 +158,225 @@ def un_jugador1():
         frame_jugadores.pack_forget()
 
     mostrar_pantalla(frame_1jugador,frames)
+
+
+
+
 def dos_jugadores2():
-    global frame_2jugadores,fondo_canvass
-    frame_2jugadores= Frame(inicio)
+    global frame_2jugadores, fondo_canvass, nombre_jugador1, nombre_jugador2,imagen_gato,imagen_dinosaurio,imagen_panda,imagen_perro,imagen_tigre
+    frame_2jugadores = Frame(inicio)
     fondo_canvass = Canvas(frame_2jugadores)
     fondo_canvass.pack(fill=BOTH, expand=True)
 
     # Cargar la imagen de fondo
-    imagen_fondo = Image.open('imagenes/fondo.png')  # Asegúrate de que esta ruta sea correcta
-    # Redimensionar la imagen una vez que la ventana esté visible
+    imagen_fondo = Image.open('imagenes/fondo.png')
     inicio.update()  # Actualiza la ventana para obtener el tamaño correcto
     imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
-    #boton de regresar
-    regresar=Button(frame_2jugadores,text='BACK', command=ir_a_jugadores, bg='#243642', 
-                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
-    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Posición en la esquina inferior derecha)
-    next= Button(frame_2jugadores, text='NEXT', command=animacion, bg='#243642', width=15,
-                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
-    next.place(x=620,y=760)
-    #imagenes para botones 
+
+    # Botón de regresar
+    regresar = Button(frame_2jugadores, text='BACK', command=ir_a_jugadores, bg='#243642', 
+                      borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+    
+    next = Button(frame_2jugadores, text='NEXT', command=animacion, bg='#243642', width=15,
+                  borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    next.place(x=620, y=760)
+
+    # Imágenes para botones 
     imagen_perro = PhotoImage(file="imagenes/perro.png")
-    imagen_panda = PhotoImage(file="imagenes/panda .png")
+    imagen_panda = PhotoImage(file="imagenes/panda.png")
     imagen_dinosaurio = PhotoImage(file="imagenes/dinosaurio.png")
     imagen_tigre = PhotoImage(file="imagenes/tigre.png")
-    imagen_gato= PhotoImage(file="imagenes/gato.png")
-    #botones para los perfiles 
-    boton_perro1= Button(frame_2jugadores,image=imagen_perro)
-    boton_panda1= Button(frame_2jugadores,image=imagen_panda)
-    boton_dinosaurio1= Button(frame_2jugadores,image=imagen_dinosaurio)
-    boton_tigre1= Button(frame_2jugadores,image=imagen_tigre)
-    boton_gato1= Button(frame_2jugadores,image=imagen_gato)
+    imagen_gato = PhotoImage(file="imagenes/gato.png")
+
+    # Botones para los perfiles 
+    boton_perro1 = Button(frame_2jugadores, image=imagen_perro,command=lambda: seleccionar_perfil_jugador1(imagen_perro))
+    boton_panda1 = Button(frame_2jugadores, image=imagen_panda,command=lambda: seleccionar_perfil_jugador1(imagen_panda))
+    boton_dinosaurio1 = Button(frame_2jugadores, image=imagen_dinosaurio,command=lambda: seleccionar_perfil_jugador1(imagen_dinosaurio))
+    boton_tigre1 = Button(frame_2jugadores, image=imagen_tigre,command=lambda: seleccionar_perfil_jugador1(imagen_tigre))
+    boton_gato1 = Button(frame_2jugadores, image=imagen_gato,command=lambda: seleccionar_perfil_jugador1(imagen_gato))
+
     # Mantener la referencia a la imagen
     boton_perro1.image = imagen_perro
     boton_panda1.image = imagen_panda
     boton_dinosaurio1.image = imagen_dinosaurio
     boton_tigre1.image = imagen_tigre
     boton_gato1.image = imagen_gato
-    #colocar los botones
-    boton_perro1.place(x=10,y=100)
-    boton_panda1.place(x=280,y=100)
-    boton_dinosaurio1.place(x=560,y=100)
-    boton_tigre1.place(x=840,y=100)
-    boton_gato1.place(x=1250,y=100)
-    #botones para los perfiles segundo jugador 
-    boton_perro2= Button(frame_2jugadores,image=imagen_perro)
-    boton_panda2= Button(frame_2jugadores,image=imagen_panda)
-    boton_dinosaurio2= Button(frame_2jugadores,image=imagen_dinosaurio)
-    boton_tigre2= Button(frame_2jugadores,image=imagen_tigre)
-    boton_gato2= Button(frame_2jugadores,image=imagen_gato)
+
+    # Colocar los botones
+    boton_perro1.place(x=10, y=100)
+    boton_panda1.place(x=280, y=100)
+    boton_dinosaurio1.place(x=560, y=100)
+    boton_tigre1.place(x=840, y=100)
+    boton_gato1.place(x=1250, y=100)
+
+    # Botones para los perfiles segundo jugador 
+    boton_perro2 = Button(frame_2jugadores, image=imagen_perro,command=lambda: seleccionar_perfil_jugador2(imagen_perro))
+    boton_panda2 = Button(frame_2jugadores, image=imagen_panda,command=lambda: seleccionar_perfil_jugador2(imagen_panda))
+    boton_dinosaurio2 = Button(frame_2jugadores, image=imagen_dinosaurio,command=lambda: seleccionar_perfil_jugador1(imagen_dinosaurio))
+    boton_tigre2 = Button(frame_2jugadores, image=imagen_tigre,command=lambda: seleccionar_perfil_jugador2(imagen_tigre))
+    boton_gato2 = Button(frame_2jugadores, image=imagen_gato,command=lambda: seleccionar_perfil_jugador2(imagen_gato))
+
     # Mantener la referencia a la imagen
     boton_perro2.image = imagen_perro
     boton_panda2.image = imagen_panda
     boton_dinosaurio2.image = imagen_dinosaurio
     boton_tigre2.image = imagen_tigre
     boton_gato2.image = imagen_gato
-    #colocar los botones
-    boton_perro2.place(x=10,y=500)
-    boton_panda2.place(x=280,y=500)
-    boton_dinosaurio2.place(x=560,y=500)
-    boton_tigre2.place(x=840,y=500)
-    boton_gato2.place(x=1250,y=500)
+
+    # Colocar los botones
+    boton_perro2.place(x=10, y=500)
+    boton_panda2.place(x=280, y=500)
+    boton_dinosaurio2.place(x=560, y=500)
+    boton_tigre2.place(x=840, y=500)
+    boton_gato2.place(x=1250, y=500)
 
     # Dibuja la imagen en el canvas
     fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
     fondo_canvass.image = fondo_imagen  # Mantén una referencia a la imagen
-    #label de nickname
-    fondo_canvass.create_text(100, 50, text="PLAYER1:", font=("Arial", 24), fill="#FEF9F2")   
-    fondo_canvass.create_text(100, 450, text="PLAYER2:", font=("Arial", 24), fill="#FEF9F2")   
+
+    # Label de nickname
+    fondo_canvass.create_text(100, 50, text="PLAYER1:", font=("Arial", 24), fill="#FEF9F2")
+    fondo_canvass.create_text(100, 450, text="PLAYER2:", font=("Arial", 24), fill="#FEF9F2")
+    
     nombre_jugador1 = Entry(frame_2jugadores)
-    nombre_jugador1.place(x=200,y=40)
+    nombre_jugador1.place(x=200, y=40)
     nombre_jugador2 = Entry(frame_2jugadores)
-    nombre_jugador2.place(x=200,y=440)
-    #eliminar pantallas no deseadas
+    nombre_jugador2.place(x=200, y=440)
+
+
+    # Eliminar pantallas no deseadas
     if 'frame_jugadores' in globals():
         frame_jugadores.pack_forget()
-    if 'frame_animacion'in globals():
+    if 'frame_animacion' in globals():
         frame_animacion.pack_forget()
-    mostrar_pantalla(frame_2jugadores,frames)
+    
+    mostrar_pantalla(frame_2jugadores, frames)
+def actualizar_jugadores():
+    global jugadores
+    jugador1 = nombre_jugador1.get()  # Obtener el texto del primer Entry
+    jugador2 = nombre_jugador2.get()  # Obtener el texto del segundo Entry
+    jugadores = [jugador1, jugador2]   # Actualizar la lista de jugadores
+
+caras = []
+animacion_activa= True
+def cargar_gif(gif_path):
+    global caras
+    caras.clear()
+    gif = Image.open(gif_path)
+    for i in range(gif.n_frames):
+        gif.seek(i)
+        cara = gif.copy().rotate(90)  # Rotar 90 grados
+        cara = cara.resize((700, 700))  
+        cara = ImageTk.PhotoImage(cara)
+        caras.append(cara)
+    print(f"Cargados {len(caras)} frames.")  # Verifica cuántos frames se cargaron
+
+def update_gif(frame_num):
+    global animacion_activa
+    if animacion_activa and caras:  # Verifica que la animación esté activa y que la lista no esté vacía
+        gif_label.config(image=caras[frame_num])
+        frame_num += 1
+        if frame_num >= len(caras):
+            frame_num = 0
+        inicio.after(90, update_gif, frame_num)  # Llama de nuevo a update_gif
+
+def finalizar_animacion():
+    global animacion_activa
+    animacion_activa = False  # Detener la animación
+    gif_label.place_forget()   # Ocultar el gif_label
+    
+    # Escoger un jugador aleatorio
+    jugador_seleccionado = random.choice(jugadores)
+
+    #
+
+    # Llamar a mostrar_resultado
+    inicio.after(0, mostrar_resultado, jugador_seleccionado)
+
+def mostrar_resultado(jugador_seleccionado):
+    # Obtener las dimensiones del canvas
+    canvas_width = fondo_canvass.winfo_width()
+    canvas_height = fondo_canvass.winfo_height()
+
+    # Calcular las coordenadas para centrar el texto y la imagen
+    x_texto = canvas_width / 2
+    y_texto_texto = canvas_height / 2 - 110  # Para el texto
+    y_texto_imagen = canvas_height / 2 + 50  # Para la imagen (más espacio)
+
+    # Mostrar el texto
+    fondo_canvass.create_text(
+        x_texto,
+        y_texto_texto,
+        text=f"¡START: {jugador_seleccionado}! ",
+        font=("Arial", 24),
+        fill="#FEF9F2",
+        anchor='center'
+    )
+    
+    # Obtener y mostrar la imagen del perfil
+    imagen_perfil = obtener_imagen_perfil(jugador_seleccionado)
+    if imagen_perfil:
+        fondo_canvass.create_image(
+            x_texto,
+            y_texto_imagen,
+            image=imagen_perfil,
+            anchor='center'
+        )
+    else:
+        print(f"No se encontró imagen para {jugador_seleccionado}")  # Para depuración
+
+
+def obtener_imagen_perfil(jugador):
+    if jugador == jugadores[0]:
+        return perfil_jugador1
+    elif jugador == jugadores[1]:
+        return perfil_jugador2
+    return None
+
+    
+def animacion():
+    global frame_animacion, gif_label, fondo_canvass
+    frame_animacion = Frame(inicio)
+    fondo_canvass = Canvas(frame_animacion)
+    fondo_canvass.pack(fill=BOTH, expand=True)
+
+    # Cargar la imagen de fondo
+    imagen_fondo = Image.open('imagenes/fondo.png')
+    imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
+    fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
+
+    # Botón de regresar
+    regresar = Button(frame_animacion, text='BACK', command=dos_jugadores2, 
+                      bg='#243642', borderwidth=8, highlightbackground='#257180', 
+                      highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+
+    # Dibuja la imagen en el canvas
+    fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
+    fondo_canvass.image = fondo_imagen
+
+    # Cargar y mostrar el GIF
+    cargar_gif('imagenes/monedagirando.gif') 
+    gif_label = Label(frame_animacion, borderwidth=-2, width=500, height=500)
+    gif_label.place(x=500, y=200)
+
+    # Iniciar la animación del GIF
+    update_gif(0)  # Llamada inicial a update_gif
+    # Detener la animación después de 3 segundos y escoger un jugador
+    inicio.after(3000, finalizar_animacion)
+    actualizar_jugadores()
+    
+   
+
+    frames['animacion'] = frame_animacion  
+    if 'frame_2jugadores' in globals():
+        frame_2jugadores.pack_forget()
+    mostrar_pantalla(frame_animacion, frames)
+
+
+
 def ir_a_marcadores():
     global frame_scores
     frame_scores = Frame(inicio)
@@ -230,77 +400,6 @@ def ir_a_marcadores():
 
     frames['marcadores'] = frame_scores  # Añade el nuevo frame al diccionario
     mostrar_pantalla(frame_scores, frames)
-
-caras = []
-jugadores=['jugador1','jugador2']
-def cargar_gif(gif_path):
-    global caras
-    caras.clear()
-    gif = Image.open(gif_path)
-    for i in range(gif.n_frames):
-        gif.seek(i)
-        cara = gif.copy().rotate(90)  # Rotar 90 grados
-        cara = cara.resize((700, 700))  
-        cara = ImageTk.PhotoImage(cara)
-        caras.append(cara)
-    print(f"Cargados {len(caras)} frames.")  # Verifica cuántos frames se cargaron
-
-
-def update_gif(frame_num):
-    if caras:  # Verifica que la lista de caras no esté vacía
-        gif_label.config(image=caras[frame_num])
-        frame_num += 1
-        if frame_num >= len(caras):
-            frame_num = 0
-        inicio.after(90, update_gif, frame_num)  # Llama de nuevo a update_gif
-#una funcion que gener el primer jugador 
-def finalizar_animacion():
-    global resultado_label
-    # Detener la animación
-    gif_label.pack_forget()
-    
-    # Escoger un jugador aleatorio
-    jugador_seleccionado = random.choice(jugadores)
-    
-    # Mostrar quién inicia
-    resultado_label = fondo_canvass.create_text(100, 50, text=f"Inicia: {jugador_seleccionado}", font=("Arial", 24), fill="#FEF9F2")
-    
-
-def animacion():
-    global frame_animacion, gif_label
-    frame_animacion = Frame(inicio)
-    fondo_canvass = Canvas(frame_animacion)
-    fondo_canvass.pack(fill=BOTH, expand=True)
-
-    # Cargar la imagen de fondo
-    imagen_fondo = Image.open('imagenes/fondo.png')
-    imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
-    fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
-
-    # Botón de regresar
-    regresar = Button(frame_animacion, text='BACK', command=dos_jugadores2, 
-                      bg='#243642', borderwidth=8, highlightbackground='#257180', 
-                      highlightcolor='#257180', font=('Helvetica', 17), fg='white')
-    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
-
-    # Dibuja la imagen en el canvas
-    fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
-    fondo_canvass.image = fondo_imagen
-
-    # Cargar y mostrar el GIF
-    cargar_gif('imagenes/monedagirando.gif') 
-    gif_label = Label(frame_animacion,borderwidth=-2,width=500, height=500)
-    gif_label.place(x=500,y=200)
-
-    # Iniciar la animación del GIF
-    update_gif(0)  # Llamada inicial a update_gif
-    # Detener la animación después de 3 segundos y escoger un jugador
-    inicio.after(20, finalizar_animacion)
-
-    frames['animacion'] = frame_animacion  
-    if 'frame_2jugadores' in globals():
-        frame_2jugadores.pack_forget()
-    mostrar_pantalla(frame_animacion, frames)
 
 #funcion que muestra la informacion de creadores y del juego
 def ir_a_info():
@@ -384,5 +483,10 @@ def ventana_prin():
     frames={'inicio':frame_inicio}
      #llama a la pantalla deseada inicial
     mostrar_pantalla(frame_inicio, frames)
+    
+    cargar_imagenes()
     inicio.mainloop()
+    
+
 ventana_prin()
+

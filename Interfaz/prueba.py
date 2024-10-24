@@ -1,74 +1,39 @@
-import random
-from tkinter import *
+from tkinter import Tk, Canvas, Button
 from PIL import Image, ImageTk
 
-caras = []  # Cambiamos el nombre a 'caras'
-jugadores = ["Jugador 1", "Jugador 2"]  # Aquí puedes definir los nombres de los jugadores
+# Crear la ventana principal
+root = Tk()
+root.geometry("800x600")
 
-def cargar_gif(gif_path):
-    global caras
-    caras.clear()
-    gif = Image.open(gif_path)
-    for i in range(gif.n_frames):
-        gif.seek(i)
-        cara = gif.copy().rotate(90)  # Rotar 90 grados
-        cara = cara.resize((700, 700))  
-        cara = ImageTk.PhotoImage(cara)
-        caras.append(cara)
-    print(f"Cargados {len(caras)} frames.")  # Verifica cuántos frames se cargaron
+# Crear un Canvas
+canvas = Canvas(root, width=800, height=600,bg='blue')
+canvas.pack()
 
-def update_gif(frame_num):
-    if caras:  # Verifica que la lista de caras no esté vacía
-        gif_label.config(image=caras[frame_num])
-        frame_num += 1
-        if frame_num >= len(caras):
-            frame_num = 0
-        inicio.after(90, update_gif, frame_num)  # Llama de nuevo a update_gif
+# Lista de imágenes para los botones
+imagenes = {
+    'boton1': 'imagenes/gato.png',
+    'boton2': 'imagenes/dinosaurio.png',
+    'boton3': 'imagenes/panda .png',
+}
 
-def finalizar_animacion():
-    # Detener la animación
-    gif_label.config(image="")
-    
-    # Escoger un jugador aleatorio
-    jugador_seleccionado = random.choice(jugadores)
-    
-    # Mostrar quién inicia
-    resultado_label = Label(frame_animacion, text=f"Inicia: {jugador_seleccionado}", font=('Helvetica', 24), fg='black')
-    resultado_label.place(relx=0.5, rely=0.5, anchor='center')
+# Función para insertar la imagen en el Canvas
+def insertar_imagen(boton):
+    ruta_imagen = imagenes[boton]
+    imagen = Image.open(ruta_imagen)
+    imagen = imagen.resize((100, 100))  # Ajusta el tamaño según sea necesario
+    foto = ImageTk.PhotoImage(imagen)
+    canvas.create_image(400, 300, image=foto)  # Cambia las coordenadas según sea necesario
+    canvas.image = foto  # Mantener una referencia de la imagen
 
-def animacion():
-    global frame_animacion, gif_label
-    frame_animacion = Frame(inicio)
-    fondo_canvass = Canvas(frame_animacion)
-    fondo_canvass.pack(fill=BOTH, expand=True)
+# Crear botones que llamen a insertar_imagen
+boton1 = Button(root, text='Insertar Imagen 1', command=lambda: insertar_imagen('boton1'))
+boton1.pack()
 
-    # Cargar la imagen de fondo
-    imagen_fondo = Image.open('imagenes/fondo.png')
-    imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
-    fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
+boton2 = Button(root, text='Insertar Imagen 2', command=lambda: insertar_imagen('boton2'))
+boton2.pack()
 
-    # Botón de regresar
-    regresar = Button(frame_animacion, text='BACK', command=dos_jugadores2, 
-                      bg='#243642', borderwidth=8, highlightbackground='#257180', 
-                      highlightcolor='#257180', font=('Helvetica', 17), fg='white')
-    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+boton3 = Button(root, text='Insertar Imagen 3', command=lambda: insertar_imagen('boton3'))
+boton3.pack()
 
-    # Dibuja la imagen en el canvas
-    fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
-    fondo_canvass.image = fondo_imagen
-
-    # Cargar y mostrar el GIF
-    cargar_gif('imagenes/monedagirando.gif') 
-    gif_label = Label(frame_animacion, borderwidth=-2, width=500, height=500)
-    gif_label.place(x=500, y=200)
-
-    # Iniciar la animación del GIF
-    update_gif(0)  # Llamada inicial a update_gif
-    
-    # Detener la animación después de 3 segundos y escoger un jugador
-    inicio.after(3000, finalizar_animacion)
-
-    frames['animacion'] = frame_animacion  
-    if 'frame_2jugadores' in globals():
-        frame_2jugadores.pack_forget()
-    mostrar_pantalla(frame_animacion, frames)
+# Ejecutar el bucle principal
+root.mainloop()
