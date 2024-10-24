@@ -45,7 +45,8 @@ def ir_a_jugadores():
     imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
     #boton de regresar
-    regresar=Button(frame_jugadores,text='BACK',bg='#605678',command= ir_a_inicio,font=('Helvetica', 17))
+    regresar=Button(frame_jugadores,text='BACK', command=ir_a_inicio, bg='#243642',
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Posición en la esquina inferior derecha)
 
     # Dibuja la imagen en el canvas
@@ -67,7 +68,7 @@ def ir_a_jugadores():
     
     mostrar_pantalla(frame_jugadores,frames)
 def un_jugador1():
-    global frame_1jugador
+    global frame_1jugador,imagen_perro,imagen_dinosaurio,imagen_panda,imagen_tigre,imagen_gato
     frame_1jugador= Frame(inicio)
     fondo_canvasj = Canvas(frame_1jugador)
     fondo_canvasj.pack(fill=BOTH, expand=True)
@@ -79,12 +80,49 @@ def un_jugador1():
     imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
     #boton de regresar
-    regresar=Button(frame_1jugador,text='BACK',bg='#605678',command= ir_a_jugadores,font=('Helvetica', 17))
+    regresar=Button(frame_1jugador,text='BACK', command=ir_a_jugadores, bg='#243642',
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Posición en la esquina inferior derecha)
+    #imagenes para botones 
+    imagen_perro = PhotoImage(file="imagenes/perro.png")
+    imagen_panda = PhotoImage(file="imagenes/panda .png")
+    imagen_dinosaurio = PhotoImage(file="imagenes/dinosaurio.png")
+    imagen_tigre = PhotoImage(file="imagenes/tigre.png")
+    imagen_gato= PhotoImage(file="imagenes/gato.png")
+    #botones para los perfiles 
+    boton_perro= Button(frame_1jugador,image=imagen_perro)
+    boton_panda= Button(frame_1jugador,image=imagen_panda)
+    boton_dinosaurio= Button(frame_1jugador,image=imagen_dinosaurio)
+    boton_tigre= Button(frame_1jugador,image=imagen_tigre)
+    boton_gato= Button(frame_1jugador,image=imagen_gato)
+    # Mantener la referencia a la imagen
+    boton_perro.image = imagen_perro
+    boton_panda.image = imagen_panda
+    boton_dinosaurio.image = imagen_dinosaurio
+    boton_tigre.image = imagen_tigre
+    boton_gato.image = imagen_gato
+    #colocar los botones
+    boton_perro.place(x=10,y=300)
+    boton_panda.place(x=280,y=300)
+    boton_dinosaurio.place(x=560,y=300)
+    boton_tigre.place(x=840,y=300)
+    boton_gato.place(x=1250,y=300)
+    #boton para empezar el juego
+    boton_play=Button(frame_1jugador,text='PLAY', bg='#243642',width=20,
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    boton_play.place(x=600,y=700)
+    
+     
+
+
 
     # Dibuja la imagen en el canvas
     fondo_canvasj.create_image(0, 0, anchor='nw', image=fondo_imagen)
     fondo_canvasj.image = fondo_imagen  # Mantén una referencia a la imagen
+    #label de nickname
+    fondo_canvasj.create_text(200, 150, text="NICKNAME:", font=("Arial", 24), fill="#FEF9F2")   
+    nombre_jugador = Entry(frame_1jugador)
+    nombre_jugador.place(x=300,y=140)
     #eliminar pantallas no deseadas
     if 'frame_jugadores' in globals():
         frame_jugadores.pack_forget()
@@ -103,15 +141,70 @@ def dos_jugadores2():
     imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
     #boton de regresar
-    regresar=Button(frame_2jugadores,text='BACK',bg='#605678',command= ir_a_jugadores,font=('Helvetica', 17))
+    regresar=Button(frame_2jugadores,text='BACK', command=ir_a_jugadores, bg='#243642', 
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Posición en la esquina inferior derecha)
+    next= Button(frame_2jugadores, text='NEXT', command=animacion, bg='#243642', width=15,
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    next.place(x=620,y=760)
+    #imagenes para botones 
+    imagen_perro = PhotoImage(file="imagenes/perro.png")
+    imagen_panda = PhotoImage(file="imagenes/panda .png")
+    imagen_dinosaurio = PhotoImage(file="imagenes/dinosaurio.png")
+    imagen_tigre = PhotoImage(file="imagenes/tigre.png")
+    imagen_gato= PhotoImage(file="imagenes/gato.png")
+    #botones para los perfiles 
+    boton_perro1= Button(frame_2jugadores,image=imagen_perro)
+    boton_panda1= Button(frame_2jugadores,image=imagen_panda)
+    boton_dinosaurio1= Button(frame_2jugadores,image=imagen_dinosaurio)
+    boton_tigre1= Button(frame_2jugadores,image=imagen_tigre)
+    boton_gato1= Button(frame_2jugadores,image=imagen_gato)
+    # Mantener la referencia a la imagen
+    boton_perro1.image = imagen_perro
+    boton_panda1.image = imagen_panda
+    boton_dinosaurio1.image = imagen_dinosaurio
+    boton_tigre1.image = imagen_tigre
+    boton_gato1.image = imagen_gato
+    #colocar los botones
+    boton_perro1.place(x=10,y=100)
+    boton_panda1.place(x=280,y=100)
+    boton_dinosaurio1.place(x=560,y=100)
+    boton_tigre1.place(x=840,y=100)
+    boton_gato1.place(x=1250,y=100)
+    #botones para los perfiles segundo jugador 
+    boton_perro2= Button(frame_2jugadores,image=imagen_perro)
+    boton_panda2= Button(frame_2jugadores,image=imagen_panda)
+    boton_dinosaurio2= Button(frame_2jugadores,image=imagen_dinosaurio)
+    boton_tigre2= Button(frame_2jugadores,image=imagen_tigre)
+    boton_gato2= Button(frame_2jugadores,image=imagen_gato)
+    # Mantener la referencia a la imagen
+    boton_perro2.image = imagen_perro
+    boton_panda2.image = imagen_panda
+    boton_dinosaurio2.image = imagen_dinosaurio
+    boton_tigre2.image = imagen_tigre
+    boton_gato2.image = imagen_gato
+    #colocar los botones
+    boton_perro2.place(x=10,y=500)
+    boton_panda2.place(x=280,y=500)
+    boton_dinosaurio2.place(x=560,y=500)
+    boton_tigre2.place(x=840,y=500)
+    boton_gato2.place(x=1250,y=500)
 
     # Dibuja la imagen en el canvas
     fondo_canvasj.create_image(0, 0, anchor='nw', image=fondo_imagen)
     fondo_canvasj.image = fondo_imagen  # Mantén una referencia a la imagen
+    #label de nickname
+    fondo_canvasj.create_text(100, 50, text="PLAYER1:", font=("Arial", 24), fill="#FEF9F2")   
+    fondo_canvasj.create_text(100, 450, text="PLAYER2:", font=("Arial", 24), fill="#FEF9F2")   
+    nombre_jugador1 = Entry(frame_2jugadores)
+    nombre_jugador1.place(x=200,y=40)
+    nombre_jugador1 = Entry(frame_2jugadores)
+    nombre_jugador1.place(x=200,y=440)
     #eliminar pantallas no deseadas
     if 'frame_jugadores' in globals():
         frame_jugadores.pack_forget()
+    if 'frame_animacion'in globals():
+        frame_animacion.pack_forget()
     mostrar_pantalla(frame_2jugadores,frames)
 def ir_a_marcadores():
     global frame_scores
@@ -126,7 +219,8 @@ def ir_a_marcadores():
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
 
     # Botón de regresar
-    regresar = Button(frame_scores, text='BACK', bg='#605678', command=ir_a_inicio, font=('Helvetica', 17))
+    regresar = Button(frame_scores, text='BACK', command=ir_a_inicio, bg='#243642', 
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
 
     # Dibuja la imagen en el canvas
@@ -135,6 +229,63 @@ def ir_a_marcadores():
 
     frames['marcadores'] = frame_scores  # Añade el nuevo frame al diccionario
     mostrar_pantalla(frame_scores, frames)
+caras = []  # Cambiamos el nombre a 'caras'
+
+def cargar_gif(gif_path):
+    global caras
+    caras.clear()
+    gif = Image.open(gif_path)
+    for i in range(gif.n_frames):
+        gif.seek(i)
+        cara = gif.copy().rotate(90)  # Rotar 90 grados
+        cara = cara.resize((700, 700))  
+        cara = ImageTk.PhotoImage(cara)
+        caras.append(cara)
+    print(f"Cargados {len(caras)} frames.")  # Verifica cuántos frames se cargaron
+
+
+def update_gif(frame_num):
+    if caras:  # Verifica que la lista de caras no esté vacía
+        gif_label.config(image=caras[frame_num])
+        frame_num += 1
+        if frame_num >= len(caras):
+            frame_num = 0
+        inicio.after(90, update_gif, frame_num)  # Llama de nuevo a update_gif
+
+def animacion():
+    global frame_animacion, gif_label
+    frame_animacion = Frame(inicio)
+    fondo_canvass = Canvas(frame_animacion)
+    fondo_canvass.pack(fill=BOTH, expand=True)
+
+    # Cargar la imagen de fondo
+    imagen_fondo = Image.open('imagenes/fondo.png')
+    imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
+    fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
+
+    # Botón de regresar
+    regresar = Button(frame_animacion, text='BACK', command=dos_jugadores2, 
+                      bg='#243642', borderwidth=8, highlightbackground='#257180', 
+                      highlightcolor='#257180', font=('Helvetica', 17), fg='white')
+    regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
+
+    # Dibuja la imagen en el canvas
+    fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
+    fondo_canvass.image = fondo_imagen
+
+    # Cargar y mostrar el GIF
+    cargar_gif('imagenes/monedagirando.gif') 
+    gif_label = Label(frame_animacion,borderwidth=-2,width=500, height=500)
+    gif_label.place(x=500,y=200)
+
+    # Iniciar la animación del GIF
+    update_gif(0)  # Llamada inicial a update_gif
+
+    frames['animacion'] = frame_animacion  
+    if 'frame_2jugadores' in globals():
+        frame_2jugadores.pack_forget()
+    mostrar_pantalla(frame_animacion, frames)
+
 #funcion que muestra la informacion de creadores y del juego
 def ir_a_info():
     global frame_info
@@ -149,7 +300,8 @@ def ir_a_info():
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
 
     # Botón de regresar
-    regresar = Button(frame_info, text='BACK', bg='#605678', command=ir_a_inicio, font=('Helvetica', 17))
+    regresar = Button(frame_info, text='BACK', command=ir_a_inicio, bg='#243642', 
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     regresar.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)
 
     # Dibuja la imagen en el canvas
@@ -191,7 +343,8 @@ def ventana_prin():
     imagen_fondo = imagen_fondo.resize((inicio.winfo_width(), inicio.winfo_height()))
     fondo_imagen = ImageTk.PhotoImage(imagen_fondo)
     ###############################3
-    exit=Button(frame_inicio,text='EXIT',bg='#605678',command= cerrar_aplicacion,font=('Helvetica', 17))
+    exit=Button(frame_inicio,text='EXIT', command=cerrar_aplicacion, bg='#243642', 
+                    borderwidth=8, highlightbackground='#257180', highlightcolor='#257180', font=('Helvetica', 17), fg='white')
     exit.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Posición en la esquina inferior derecha)
 
     jugadores= Button(frame_inicio,text='PLAYERS',command= ir_a_jugadores,bg='#243642', width=20,
