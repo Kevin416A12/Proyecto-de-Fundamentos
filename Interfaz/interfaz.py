@@ -130,10 +130,10 @@ def un_jugador1():
 
     mostrar_pantalla(frame_1jugador,frames)
 def dos_jugadores2():
-    global frame_2jugadores
+    global frame_2jugadores,fondo_canvass
     frame_2jugadores= Frame(inicio)
-    fondo_canvasj = Canvas(frame_2jugadores)
-    fondo_canvasj.pack(fill=BOTH, expand=True)
+    fondo_canvass = Canvas(frame_2jugadores)
+    fondo_canvass.pack(fill=BOTH, expand=True)
 
     # Cargar la imagen de fondo
     imagen_fondo = Image.open('imagenes/fondo.png')  # Asegúrate de que esta ruta sea correcta
@@ -192,15 +192,15 @@ def dos_jugadores2():
     boton_gato2.place(x=1250,y=500)
 
     # Dibuja la imagen en el canvas
-    fondo_canvasj.create_image(0, 0, anchor='nw', image=fondo_imagen)
-    fondo_canvasj.image = fondo_imagen  # Mantén una referencia a la imagen
+    fondo_canvass.create_image(0, 0, anchor='nw', image=fondo_imagen)
+    fondo_canvass.image = fondo_imagen  # Mantén una referencia a la imagen
     #label de nickname
-    fondo_canvasj.create_text(100, 50, text="PLAYER1:", font=("Arial", 24), fill="#FEF9F2")   
-    fondo_canvasj.create_text(100, 450, text="PLAYER2:", font=("Arial", 24), fill="#FEF9F2")   
+    fondo_canvass.create_text(100, 50, text="PLAYER1:", font=("Arial", 24), fill="#FEF9F2")   
+    fondo_canvass.create_text(100, 450, text="PLAYER2:", font=("Arial", 24), fill="#FEF9F2")   
     nombre_jugador1 = Entry(frame_2jugadores)
     nombre_jugador1.place(x=200,y=40)
-    nombre_jugador1 = Entry(frame_2jugadores)
-    nombre_jugador1.place(x=200,y=440)
+    nombre_jugador2 = Entry(frame_2jugadores)
+    nombre_jugador2.place(x=200,y=440)
     #eliminar pantallas no deseadas
     if 'frame_jugadores' in globals():
         frame_jugadores.pack_forget()
@@ -232,7 +232,7 @@ def ir_a_marcadores():
     mostrar_pantalla(frame_scores, frames)
 
 caras = []
-jugadores=[]
+jugadores=['jugador1','jugador2']
 def cargar_gif(gif_path):
     global caras
     caras.clear()
@@ -253,6 +253,18 @@ def update_gif(frame_num):
         if frame_num >= len(caras):
             frame_num = 0
         inicio.after(90, update_gif, frame_num)  # Llama de nuevo a update_gif
+#una funcion que gener el primer jugador 
+def finalizar_animacion():
+    global resultado_label
+    # Detener la animación
+    gif_label.pack_forget()
+    
+    # Escoger un jugador aleatorio
+    jugador_seleccionado = random.choice(jugadores)
+    
+    # Mostrar quién inicia
+    resultado_label = fondo_canvass.create_text(100, 50, text=f"Inicia: {jugador_seleccionado}", font=("Arial", 24), fill="#FEF9F2")
+    
 
 def animacion():
     global frame_animacion, gif_label
@@ -282,6 +294,8 @@ def animacion():
 
     # Iniciar la animación del GIF
     update_gif(0)  # Llamada inicial a update_gif
+    # Detener la animación después de 3 segundos y escoger un jugador
+    inicio.after(20, finalizar_animacion)
 
     frames['animacion'] = frame_animacion  
     if 'frame_2jugadores' in globals():
