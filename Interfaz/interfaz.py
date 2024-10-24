@@ -1,5 +1,6 @@
 ﻿from tkinter import *
 import pygame
+import random
 from PIL import Image, ImageTk  # Importa PIL para manejar imágenes
 # Inicializa pygame y su funcion de musica
 pygame.init()
@@ -229,8 +230,9 @@ def ir_a_marcadores():
 
     frames['marcadores'] = frame_scores  # Añade el nuevo frame al diccionario
     mostrar_pantalla(frame_scores, frames)
-caras = []  # Cambiamos el nombre a 'caras'
 
+caras = []
+jugadores=[]
 def cargar_gif(gif_path):
     global caras
     caras.clear()
