@@ -43,6 +43,8 @@ lista_250 = [0, 0, 0, 0, 0, 1, 0, 0]
 lista_500 = [0, 0, 0, 0, 1, 0, 0, 0]
 
 
+led_jugador_1.on()
+
 def clock_pulse():
     CLK.on()
     time.sleep(0.01)  # Pequeño retardo para permitir el cambio
@@ -66,15 +68,6 @@ def boton_pulsado(lista):
     limpiar()
 
 
-def leer_potenciometro():
-    valor_actual = potenciometro.read_u16() / 65535 * 3.3
-    print(valor_actual)
-    if valor_actual < 0.20:
-        led_jugador_2.on()
-        led_jugador_1.off()
-    elif valor_actual > 2.20:
-        led_jugador_2.off()
-        led_jugador_1.on()
 
 
 def limpiar():
@@ -82,15 +75,33 @@ def limpiar():
         shift_bit(0)  # Desplaza un bit '0' al registro
     print("Limpio")
 
-
+ultimo_valor_potenciometro = 0
 limpiar()
-
 while True:
     """cuando el boton es presionado, lee el potenciometro e imprime el valor(falta meter la logica para que diga cuando 
      un jugador esta seleccionado) y tambien manda el paquete "b'cambio'" """
 
+    """Lectura del potenciómetro y verificación de cambio en múltiplos de 5"""
+    lectura_potenciometro = potenciometro.read_u16() // 65535 * 25
+
+    if lectura_potenciometro % 5 == 0 and lectura_potenciometro != ultimo_valor_potenciometro:
+        # Actualizar el último valor registrado
+        ultimo_valor_potenciometro = lectura_potenciometro
+
+        # Crea un socket para enviar el valor del potenciómetro
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.connect((host, port))
+            s.send(f'Potenciómetro: {lectura_potenciometro}'.encode()) #aqui envia la lectura del potenciometro
+        except OSError as e:
+            print("Error de conexión:", e)
+        finally:
+            s.close()  # Cierra el socket manualmente
+        time.sleep(0.5)  # Anti-rebote
+        print(f"Mensaje enviado: Potenciómetro: {lectura_potenciometro}")
+
+
     if boton_cambio.value() == 1:
-        leer_potenciometro()
         # Crea un socket
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
