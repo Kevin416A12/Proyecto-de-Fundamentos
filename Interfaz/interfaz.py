@@ -9,6 +9,7 @@ jugadores = []
 jugador_actual = None
 puntaje_jugador1 = 0
 puntaje_jugador2 = 0
+puntaje_jugador1_1= 0 
 def iniciar_socket():
 
 
@@ -29,20 +30,23 @@ def iniciar_socket():
 
                 if data in [b'100', b'150', b'200', b'250']:
                     puntos = int(data.decode())
+                    reproducir_sonido_botones()
                     mostrar_mensaje(puntos)
 
                 if data == b"500":
                     puntos = int(data.decode())
+                    reproducir_sonido_500
                     mostrar_mensaje(puntos)
 # Variables para almacenar los textos de puntaje en cada canvas
 puntaje1_canvas1 = None
 puntaje1_canvas2 = None
 puntaje2_canvas1 = None
 puntaje2_canvas2 = None
+puntaje_1jugador = None
 
 def actualizar_puntaje(puntos):
     global puntaje_jugador1, puntaje_jugador2, fondo_canvasa, fondo_canvasa2, jugador_seleccionado, canvas_actual
-    global puntaje1_canvas1, puntaje1_canvas2, puntaje2_canvas1, puntaje2_canvas2
+    global puntaje1_canvas1, puntaje1_canvas2, puntaje2_canvas1, puntaje2_canvas2,puntaje_jugador1_1,puntaje_1jugador
 
     if jugador1 == jugador_seleccionado:
         print("jug1")
@@ -83,7 +87,22 @@ def actualizar_puntaje(puntos):
                 fondo_canvasa2.delete(puntaje2_canvas2)
             puntaje2_canvas2 = fondo_canvasa2.create_text(140, 500, text=f'Puntos: {puntaje_jugador2}', font=("Arial", 24),
                                                           fill='#FEF9F2', anchor='center')
+    elif jugador1_1:
+        print('jugador solo')
+        puntaje_jugador1_1 += puntos
 
+        if canvas_actual == fondo_canvasa1:
+            print("canvas1 para jugador 2")
+            if puntaje_1jugador:
+                fondo_canvasa1.delete(puntaje_1jugador)
+            puntaje_1jugador = fondo_canvasa.create_text(140, 500, text=f'Puntos: {puntaje_jugador1_1}', font=("Arial", 24),
+                                                         fill='#FEF9F2', anchor='center')
+        
+def guardar_puntaje1():
+    global puntaje_1jugador,puntaje_jugador1_1,jugador1_1
+    with open('puntajes.txt', 'a') as file:
+        file.write(f'{jugador1_1}: {puntaje_jugador1_1}\n')
+        
 def guardar_puntaje():
     global puntaje_jugador1, puntaje_jugador2,jugador1,jugador2
     with open('puntajes.txt', 'a') as file:
@@ -111,6 +130,23 @@ def reproducir_musica():
     pygame.mixer.music.load('musica y sonidos/Clair de Lune Studio Version.mp3')
     pygame.mixer.music.play(-1)
 
+def cargar_sonido_botones():
+    return pygame.mixer.Sound('musica y sonidos/Sonido de Victoria de un Juego para tus vídeos - Efecto de Sonido.mp3')
+
+sonido_botones = cargar_sonido_botones()
+
+def reproducir_sonido_botones():
+    sonido_botones.play()
+
+def cargar_sonido_500():
+    return pygame.mixer.Sound('musica y sonidos/musica 500.mp3')
+
+sonido_500 = cargar_sonido_500()
+
+def reproducir_sonido_500():
+    sonido_500.play()
+
+     
 # Función para detener la música
 def detener_musica():
     pygame.mixer.music.stop()
@@ -157,7 +193,7 @@ def ir_a_jugadores():
     un_jugador=Button(frame_jugadores,text='1 PLAYER',command= un_jugador1,bg='#243642', width=20,
                           borderwidth=8, highlightbackground='#257180', highlightcolor='#257180',font=('Helvetica', 17),fg='white')
     un_jugador.place(x=600,y=300)
-    dos_jugadores=Button(frame_jugadores,text='2 PLAYERS',command= dos_jugadores2,bg='#243642', width=20,
+    dos_jugadores=Button(frame_jugadores,text='2 PLAYERS',command=dos_jugadores2,bg='#243642', width=20,
                           borderwidth=8, highlightbackground='#257180', highlightcolor='#257180',font=('Helvetica', 17),fg='white')
     dos_jugadores.place(x=600,y=500)
     #cerrar pantalla no deseadas
@@ -502,7 +538,7 @@ def ventana_juego1():
 
     
 
-    boton_scores = Button(frame_juego1, text='SCORES', command=ir_a_marcadores, width=20,
+    boton_scores = Button(frame_juego1, text='SCORES', command=lambda:(guardar_puntaje1(),ir_a_marcadores()), width=20,
                           bg='#B6FFA1', borderwidth=8, highlightbackground='#257180', 
                           highlightcolor='#257180', font=('Aptos Black', 20), fg='black')
     
@@ -602,15 +638,17 @@ def ventana_juego2():
     boton_start2.place(x=650, y=500, anchor='center')
 
     # Mostrar información del jugador que está jugando
-    fondo_canvasa2.create_text(140, 100, text=f'Jugando: {jugador2}!', font=("Aptos Black", 30), fill='#FEF9F2', anchor='center')
+    
     boton_scores= Button(frame_juego2, text='SCORES', command=lambda:(guardar_puntaje(),ir_a_marcadores()), width=20,
                           bg='#B6FFA1', borderwidth=8, highlightbackground='#257180', 
                           highlightcolor='#257180', font=('Aptos Black', 20), fg='black')
 
     
-    imagen_perfil_jugador2 = obtener_imagen_perfil(jugador2)  # Asegúrate de que esta variable esté definida
-    if imagen_perfil_jugador2:
-        fondo_canvasa2.create_image(50, 150, image=imagen_perfil_jugador2, anchor='nw')
+    if jugador_seleccionado:
+        fondo_canvasa2.create_text(140, 100, text=f'Jugando: {jugador_seleccionado}!', font=("Arial", 24), fill='#FEF9F2', anchor='center')
+        imagen_perfil_jugador = obtener_imagen_perfil(jugador_seleccionado)
+        if imagen_perfil_jugador:
+            fondo_canvasa2.create_image(50, 150, image=imagen_perfil_jugador, anchor='nw')
 
     frames['ventana juego2'] = frame_juego2
     if 'ventana juego' in globals():
