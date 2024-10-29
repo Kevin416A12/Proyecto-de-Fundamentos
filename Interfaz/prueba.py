@@ -1,4 +1,5 @@
 # Iniciar el socket en un hilo separado
+""""
 import threading
 socket_thread = threading.Thread(target=iniciar_socket, daemon=True)
 socket_thread.start()
@@ -71,3 +72,32 @@ def actualizar_puntos_display():
 def guardar_puntos():
     with open("puntajes.txt", "a") as file:
         file.write(f'Jugador 1: {puntos_jugador1}, Jugador 2: {puntos_jugador2}\n')
+"""
+
+import tkinter as tk
+
+root = tk.Tk()
+
+button = tk.Button(root, text="Botón",
+                   highlightcolor="red",      # Cambia el color del borde de enfoque
+                   highlightthickness=10)       # Cambia el grosor del borde de enfoque
+button.pack(pady=20, padx=20)
+import tkinter as tk
+
+def on_focus(event):
+    event.widget.config(borderwidth=3, relief="solid", highlightbackground="blue")
+
+def on_focus_lost(event):
+    event.widget.config(borderwidth=1, relief="raised", highlightbackground="grey")
+
+root = tk.Tk()
+
+button = tk.Button(root, text="Botón")
+button.bind("<FocusIn>", on_focus)
+button.bind("<FocusOut>", on_focus_lost)
+
+button.pack(pady=20, padx=20)
+
+root.mainloop()
+
+root.mainloop()
