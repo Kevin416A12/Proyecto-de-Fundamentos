@@ -35,7 +35,7 @@ def iniciar_socket():
 
                 if data == b"500":
                     puntos = int(data.decode())
-                    reproducir_sonido_500
+                    reproducir_sonido_500()
                     mostrar_mensaje(puntos)
 # Variables para almacenar los textos de puntaje en cada canvas
 puntaje1_canvas1 = None
@@ -127,7 +127,7 @@ pygame.mixer.init()
 
 # Función para reproducir música en bucle
 def reproducir_musica():
-    pygame.mixer.music.load('musica y sonidos/Clair de Lune Studio Version.mp3')
+    pygame.mixer.music.load('musica y sonidos/Williams  Star Trek the next generation  pinball soundtrack.mp3')
     pygame.mixer.music.play(-1)
 
 def cargar_sonido_botones():
